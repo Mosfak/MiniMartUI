@@ -12,7 +12,9 @@ export const routes: Routes = [
 },
 {
     path: 'products',
-    loadComponent: () => import('./components/products/products').then(m => m.Products)
+    loadComponent: () => import('./components/products/products').then(m => m.Products),
+    canActivate: [RoleGuard],
+    data: { roles: ['Admin', 'Customer'] } // both admin and customer can access
 }
 
 ];

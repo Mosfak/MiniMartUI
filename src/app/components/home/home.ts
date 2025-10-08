@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class Home {
-  
+  constructor() {
+    localStorage.setItem('userRole', 'customer');
+  }
 }
