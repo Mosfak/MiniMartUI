@@ -1,0 +1,15 @@
+<div class="product-list bg-white rounded-lg shadow p-6">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Product List</h2>
+    <ul>
+        <li *ngFor="let product of products" class="mb-4 last:mb-0">
+            <div class="flex items-center bg-gray-50 rounded-lg p-4 hover:shadow transition">
+                <img [src]="product.image" alt="{{product.name}}" class="w-20 h-20 object-cover rounded mr-4 border border-gray-200">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700">{{product.name}}</h3>
+                    <p class="text-gray-500 text-sm mb-2">{{product.description}}</p>
+                    <span class="text-primary font-bold">Price: ${{product.price}}</span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
