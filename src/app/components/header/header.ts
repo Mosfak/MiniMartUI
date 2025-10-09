@@ -17,5 +17,8 @@ export class Header {
   logout() {
     this.auth.logout();
   }
+  getRole(){
+    return this.auth.getRole();
+  }
 }
  
