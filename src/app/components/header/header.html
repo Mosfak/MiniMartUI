@@ -11,14 +11,14 @@
     <a *ngIf="!isLoggedIn" href="/login" class="text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded transition">Login</a>
 
     <!-- If logged in, show dropdown -->
-    <div *ngIf="isLoggedIn" class="relative group inline-block">
+    <div *ngIf="isLoggedIn" class="relative group inline-block" >
         <button (click)="showAccountMenu = !showAccountMenu" class="text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded transition flex items-center">
             My Account
             <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
         </button>
-        <div class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10" *ngIf="showAccountMenu" (clickOutside)="showAccountMenu = false">
+        <div class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10" *ngIf="showAccountMenu" (mouseleave)="showAccountMenu = false">
             <a href="/cart" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My Cart</a>
             <a href="/purchase-history" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My Purchase History</a>
             <button (click)="logout()" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
