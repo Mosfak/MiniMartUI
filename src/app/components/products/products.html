@@ -1,15 +1,52 @@
-<div class="product-list bg-white rounded-lg shadow p-6">
+<div class="product-list bg-white rounded-lg shadow p-6 relative">
     <h2 class="text-2xl font-bold mb-4 text-gray-800">Product List</h2>
+    <button 
+        class="absolute top-6 right-6 bg-primary text-white bg-green-600 px-4 py-2 rounded shadow hover:bg-primary-dark transition"
+        (click)="showCreateModal = true">
+        Create New
+    </button>
     <ul>
         <li *ngFor="let product of products" class="mb-4 last:mb-0">
             <div class="flex items-center bg-gray-50 rounded-lg p-4 hover:shadow transition">
                 <img [src]="product.image" alt="{{product.name}}" class="w-20 h-20 object-cover rounded mr-4 border border-gray-200">
-                <div>
+                <div class="flex-1">
                     <h3 class="text-lg font-semibold text-gray-700">{{product.name}}</h3>
                     <p class="text-gray-500 text-sm mb-2">{{product.description}}</p>
                     <span class="text-primary font-bold">Price: ${{product.price}}</span>
                 </div>
+                <button 
+                    class="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                    (click)="deleteProduct(product)">
+                    Delete
+                </button>
             </div>
         </li>
     </ul>
+
+    <!-- Modal for creating new product -->
+    <div *ngIf="showCreateModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50" (click)="showCreateModal = false">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative">
+            <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" (click)="showCreateModal = false">&times;</button>
+            <h3 class="text-xl font-bold mb-4">Add New Product</h3>
+            <form (ngSubmit)="addProduct()" #productForm="ngForm">
+                <div class="mb-3">
+                    <label class="block text-gray-700 mb-1">Name</label>
+                    <input type="text" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-gray-700 mb-1">Description</label>
+                    <input type="text" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.description" name="description" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-gray-700 mb-1">Price</label>
+                    <input type="number" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.price" name="price" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-gray-700 mb-1">Image URL</label>
+                    <input type="text" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.image" name="image" required>
+                </div>
+                <button type="submit" class="bg-primary text-white bg-green-600 px-4 py-2 rounded hover:bg-primary-dark transition w-full">Add Product</button>
+            </form>
+        </div>
+    </div>
 </div>

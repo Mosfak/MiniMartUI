@@ -30,14 +30,7 @@ export class AuthService {
     return this.http
       .post<{ token: string }>('https://localhost:7276/api/auth/login', { username, password })
       .pipe(tap(res => this.setToken(res.token)));
-    // mock login for demo
-    // const role = username.toLowerCase() === 'admin' ? 'Admin' : 'Customer';
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiaG9sYSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkN1c3RvbWVyIiwiZXhwIjoxNzU5OTA1NTk1LCJpc3MiOiJNaW5pTWFydEFQSVNlcnZlciIsImF1ZCI6Ik1pbmlNYXJ0Q2xpZW50In0.Hl_hji00CAMdEPyog6Mcv9PsQDWCN1un6z4uRbe9gn0"
-    // this.setToken(token);
-    // return new Observable<{ token: string }>(observer => {
-    //   observer.next({ token });
-    //   observer.complete();
-    // });
+    
   }
 
   private parseJwt(token: string): JwtPayload | null {
@@ -55,13 +48,23 @@ export class AuthService {
     }
 
     // try several possible claim names for username/role
-    const username = p['unique_name'] ?? p['name'] ?? p['sub'] ?? '';
-    const role = p['role'] ?? p['roles'] ?? p['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ?? 'Customer';
+    let username = '';
+    if (p['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']) {
+      username = p['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+    } 
+
+    let role = 'Default';
+    if (p['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) {
+      role = p['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    }
     this.user.set({ username, role });
   }
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
+  }
+  getUser(): { username: string; role: string } | null {
+    return this.user();
   }
 
   logout(redirect = true) {
