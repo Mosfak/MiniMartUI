@@ -20,7 +20,7 @@ export class RoleGuard implements CanActivate {
     if (!roles || roles.length === 0) return true; // no role restriction
 
     const userRole = this.auth.getRole();
-    console.log('RoleGuard: user role', userRole, 'required roles:', roles);
+    console.log('RoleGuard: user', this.auth.getUser(), 'role', userRole, 'required roles:', roles);
     if (userRole && roles.includes(userRole)) {
       return true;
     }
