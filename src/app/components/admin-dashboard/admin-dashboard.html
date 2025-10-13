@@ -6,7 +6,8 @@
     <div class="mb-8">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">Manage Admins</h2>
       <form class="flex items-center space-x-4 mb-4" (ngSubmit)="createAdmin()">
-        <input type="text" [(ngModel)]="newAdminUsername" placeholder="Admin Username" class="border rounded px-3 py-2 w-64" required>
+        <input type="text" [(ngModel)]="newAdminUsername" name="username" placeholder="Admin Username" class="border rounded px-3 py-2 w-64" required>
+        <input type="password" [(ngModel)]="newAdminPassword" name="password" placeholder="Password" class="border rounded px-3 py-2 w-64" required>
         <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Create Admin</button>
       </form>
       <ul>
