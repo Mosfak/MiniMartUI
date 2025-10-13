@@ -3,18 +3,20 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ProductService } from '../../services/ProductService/product-service';
-
+import { Product } from '../../services/ProductService/product-service';
+import { CartItem, CartService } from '../../services/CartService/cart-service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './products.html',
   styles: ``
 })
 
 export class Products {
   products: Product[] = [];
-
+  
   showCreateModal = false;
   showCartPopup = false;
   cartPopupProduct: Product | null = null;
@@ -28,7 +30,7 @@ export class Products {
    description: ''
   };
 
-  constructor(private auth: AuthService, private productService: ProductService) {}
+  constructor(private auth: AuthService, private productService: ProductService, private cartService: CartService, private router: Router) {}
    ngOnInit(): void {
    this.loadProducts();
   }
@@ -54,18 +56,6 @@ export class Products {
     this.showCreateModal = false;
 
   }
-  // addProduct() {
-  //   const nextId = this.products.length ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
-  //   const productToAdd : Product = {
-  //     id: nextId,
-  //     name: this.newProduct.name,
-  //     description: this.newProduct.description,
-  //     price: this.newProduct.price,
-  //     image: this.newProduct.image
-  //   };
-  //   this.products.push(productToAdd);
-  //   this.showCreateModal = false;
-  // }
 
   deleteProduct(product: Product) {
     this.productService.deleteProduct(product.productId).subscribe({
@@ -81,12 +71,22 @@ export class Products {
   addToCart(product: Product) {
     this.cartPopupProduct = product;
     this.showCartPopup = true;
+    const cartItem: CartItem = {
+      productId: product.productId,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      image: product.imageUrl,
+      description: product.description
+    };
+    this.cartService.addToCart(cartItem);
+    console.log(this.cartService.getCart());
     setTimeout(() => (this.showCartPopup = false), 4000);
   }
 
 
   viewCart() {
-    window.location.href = '/cart';
+    this.router.navigate(['/cart']);
     this.showCartPopup = false;
   }
 

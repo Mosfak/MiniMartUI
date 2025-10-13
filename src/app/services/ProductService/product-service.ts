@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Product {
+  productId: number;
+  name: string;
+  price: number;
+  category: string;
+  imageUrl: string;
+  description: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -23,3 +31,5 @@ export class ProductService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
+
+

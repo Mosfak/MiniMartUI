@@ -26,7 +26,7 @@ export const routes: Routes = [
     path: 'cart',
     loadComponent: () => import('./components/cart/cart').then(m => m.Cart),
     canActivate: [RoleGuard],
-    data: { roles: ['Admin', 'Customer'] } // both admin and customer can access
+    data: { roles: ['Customer'] } // only customer can access
 },
 {
     path: 'purchase-history',

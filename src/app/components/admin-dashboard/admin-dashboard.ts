@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/AdminServices/admin-service';
+import { RouterLink } from '@angular/router';
+
 interface Admin {
   username: string;
   role: string;
@@ -11,7 +13,7 @@ interface Admin {
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './admin-dashboard.html',
   styles: ``
 })

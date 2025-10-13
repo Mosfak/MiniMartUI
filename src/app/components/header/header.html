@@ -1,14 +1,14 @@
 <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
   <div class="flex items-center space-x-4">
     <span class="text-2xl font-bold text-green-600">MiniMart</span>
-    <a href="/" class="text-gray-700 hover:text-green-600 px-3 py-2">Home</a>
-    <a href="/products" class="text-gray-700 hover:text-green-600 px-3 py-2">Shop</a>
-    <a href="/about" class="text-gray-700 hover:text-green-600 px-3 py-2">About</a>
-    <a href="/contact" class="text-gray-700 hover:text-green-600 px-3 py-2">Contact</a>
+    <a routerLink="/" class="text-gray-700 hover:text-green-600 px-3 py-2">Home</a>
+    <a routerLink="/products" class="text-gray-700 hover:text-green-600 px-3 py-2">Shop</a>
+    <a routerLink="/about" class="text-gray-700 hover:text-green-600 px-3 py-2">About</a>
+    <a routerLink="/contact" class="text-gray-700 hover:text-green-600 px-3 py-2">Contact</a>
   </div>
   <div>
     <!-- If not logged in -->
-    <a *ngIf="!isLoggedIn" href="/login" class="text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded transition">Login</a>
+    <a *ngIf="!isLoggedIn" routerLink="/login" class="text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded transition">Login</a>
 
     <!-- If logged in, show dropdown -->
     <div *ngIf="isLoggedIn" class="relative group inline-block">
@@ -19,9 +19,9 @@
             </svg>
         </button>
         <div class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10" *ngIf="showAccountMenu" (mouseleave)="showAccountMenu = false">
-            <a *ngIf="getRole() === 'Admin'" href="/dashboard" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
-            <a *ngIf="getRole() === 'Customer'" href="/cart" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cart</a>
-            <a href="/purchase-history" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Purchase History</a>
+            <a *ngIf="getRole() === 'Admin'" routerLink="/dashboard" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
+            <a *ngIf="getRole() === 'Customer'" routerLink="/cart" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cart</a>
+            <a routerLink="/purchase-history" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Purchase History</a>
             <button (click)="logout()" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
         </div>
     </div>
