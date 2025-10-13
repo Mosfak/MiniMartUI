@@ -79,8 +79,8 @@ export class Products {
       image: product.imageUrl,
       description: product.description
     };
-    this.cartService.addToCart(cartItem);
-    console.log(this.cartService.getCart());
+    this.cartService.addItem(cartItem);
+    console.log(this.cartService.getItems());
     setTimeout(() => (this.showCartPopup = false), 4000);
   }
 

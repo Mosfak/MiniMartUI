@@ -1,43 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CartService, CartItem } from '../../services/CartService/cart-service';
+import { CartService } from '../../services/CartService/cart-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './cart.html',
   styles: ``
 })
-export class Cart {
-  constructor(public cartService: CartService) {}
+export class Cart implements OnInit {
+  cartItems: any[] = [];
+  total = 0;
 
-  // Always get cart items directly from service
-  get cart(): CartItem[] {
-    return this.cartService.getCart();
+  constructor(private cartService: CartService) {}
+
+  ngOnInit() {
+    this.cartService.cartItems$.subscribe(items => {
+      this.cartItems = items;
+      this.total = this.cartService.getTotal();
+    });
   }
 
-  updateQuantity(id: number, event: any) {
-    const quantity = parseInt(event.target.value, 10);
-    if (quantity > 0) {
-      this.cartService.updateQuantity(id, quantity);
-    }
+  getCartItems() {
+    return this.cartItems;
   }
 
-  getCartItems(): CartItem[] {
-    return this.cartService.getCart();
+  updateQuantity(productId: number, qty: number) {
+    this.cartService.updateQuantity(productId, Number(qty));
   }
 
-  removeItem(id: number) {
-    this.cartService.removeFromCart(id);
-  }
-
-  checkout() {
-    console.log('Checking out', this.cartService.getCart());
-    // TODO: Call backend API to create an order
-    this.cartService.clearCart();
+  removeItem(productId: number) {
+    this.cartService.removeItem(productId);
   }
 
   getTotal() {
-    return this.cartService.getTotal();
+    return this.total;
+  }
+
+  checkout() {
+    console.log('Checking out');
+    // TODO: Call backend API to create an order
+    this.cartService.checkout();
+    // this.cartService.clearCart();
   }
 }
