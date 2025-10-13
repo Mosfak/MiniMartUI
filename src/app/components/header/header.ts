@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 export class Header {
   showAccountMenu = false;
   constructor(private auth: AuthService) {}
+  ngOnInit(): void {this.showAccountMenu = false;}
   get isLoggedIn() {
     return this.auth.isLoggedIn();
   }

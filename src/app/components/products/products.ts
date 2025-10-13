@@ -1,14 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { ProductService } from '../../services/ProductService/product-service';
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-}
 
 @Component({
   selector: 'app-products',
@@ -18,36 +13,84 @@ interface Product {
 })
 
 export class Products {
-  products: Product[] = [
-    { id: 1, name: 'Product 1', price: 10.0, image : 'https://img.freepik.com/free-psd/full-shopping-cart-groceries_191095-79355.jpg?semt=ais_hybrid&w=740&q=80', description: "Description for Product 1" },
-    { id: 2, name: 'Product 2', price: 20.0, image : 'https://img.freepik.com/free-psd/full-shopping-cart-groceries_191095-79355.jpg?semt=ais_hybrid&w=740&q=80', description: "Description for Product 2" },
-    { id: 3, name: 'Product 3', price: 30.0, image : 'https://img.freepik.com/free-psd/full-shopping-cart-groceries_191095-79355.jpg?semt=ais_hybrid&w=740&q=80', description: "Description for Product 3" }
-  ];
+  products: Product[] = [];
 
   showCreateModal = false;
+  showCartPopup = false;
+  cartPopupProduct: Product | null = null;
 
   newProduct: Product = {
-    id: 0,
-    name: '',
-    description: '',
-    price: 0,
-    image: ''
+   productId: 0,
+   name: '',
+   price: 0,
+   category: '',
+   imageUrl: '',
+   description: ''
   };
 
-  addProduct() {
-    const nextId = this.products.length ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
-    const productToAdd : Product = {
-      id: nextId,
-      name: this.newProduct.name,
-      description: this.newProduct.description,
-      price: this.newProduct.price,
-      image: this.newProduct.image
-    };
-    this.products.push(productToAdd);
-    this.showCreateModal = false;
+  constructor(private auth: AuthService, private productService: ProductService) {}
+   ngOnInit(): void {
+   this.loadProducts();
   }
 
+  loadProducts() {
+    return this.productService.getProducts().subscribe({
+      next: data => {
+         this.products = data;
+         console.log(this.products);
+      },
+      error: err => console.error('Failed to load products', err)
+    });
+  }
+
+  addProduct() {
+    this.productService.addProduct(this.newProduct).subscribe({
+      next: product => {
+        this.products.push(product);
+        this.showCreateModal = false;
+      },
+      error: err => console.error('Failed to add product', err)
+    });
+    this.showCreateModal = false;
+
+  }
+  // addProduct() {
+  //   const nextId = this.products.length ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
+  //   const productToAdd : Product = {
+  //     id: nextId,
+  //     name: this.newProduct.name,
+  //     description: this.newProduct.description,
+  //     price: this.newProduct.price,
+  //     image: this.newProduct.image
+  //   };
+  //   this.products.push(productToAdd);
+  //   this.showCreateModal = false;
+  // }
+
   deleteProduct(product: Product) {
-    this.products = this.products.filter(p => p.id !== product.id);
+    this.productService.deleteProduct(product.productId).subscribe({
+      next: () => (this.products = this.products.filter(p => p.productId !== product.productId)),
+      error: err => console.error('Failed to delete product', err)
+    });
+  }
+
+  getRole() {
+    return this.auth.getRole();
+  }
+  
+  addToCart(product: Product) {
+    this.cartPopupProduct = product;
+    this.showCartPopup = true;
+    setTimeout(() => (this.showCartPopup = false), 4000);
+  }
+
+
+  viewCart() {
+    window.location.href = '/cart';
+    this.showCartPopup = false;
+  }
+
+  closeCartPopup() {
+    this.showCartPopup = false;
   }
 }

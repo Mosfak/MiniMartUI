@@ -1,0 +1,30 @@
+<div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Purchase History</h2>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Item</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-100">
+            <!-- Example row, replace with *ngFor -->
+            <tr>
+                <td class="px-4 py-2 text-gray-700">2024-06-10</td>
+                <td class="px-4 py-2 text-gray-700">Apple Juice</td>
+                <td class="px-4 py-2 text-gray-700">2</td>
+                <td class="px-4 py-2 text-gray-700">$5.00</td>
+                <td class="px-4 py-2">
+                    <span class="inline-block px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-800">Completed</span>
+                </td>
+            </tr>
+            <!-- Add more rows dynamically -->
+        </tbody>
+    </table>
+    <div class="mt-6 flex justify-end">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">View More</button>
+    </div>
+</div>

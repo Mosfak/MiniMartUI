@@ -1,6 +1,8 @@
 <div class="product-list bg-white rounded-lg shadow p-6 relative">
     <h2 class="text-2xl font-bold mb-4 text-gray-800">Product List</h2>
+    <!-- Show "Create New" button only for Admin -->
     <button 
+        *ngIf="getRole() === 'Admin'"
         class="absolute top-6 right-6 bg-primary text-white bg-green-600 px-4 py-2 rounded shadow hover:bg-primary-dark transition"
         (click)="showCreateModal = true">
         Create New
@@ -8,30 +10,44 @@
     <ul>
         <li *ngFor="let product of products" class="mb-4 last:mb-0">
             <div class="flex items-center bg-gray-50 rounded-lg p-4 hover:shadow transition">
-                <img [src]="product.image" alt="{{product.name}}" class="w-20 h-20 object-cover rounded mr-4 border border-gray-200">
+                <img [src]="product.imageUrl" alt="{{product.name}}" class="w-20 h-20 object-cover rounded mr-4 border border-gray-200">
                 <div class="flex-1">
                     <h3 class="text-lg font-semibold text-gray-700">{{product.name}}</h3>
                     <p class="text-gray-500 text-sm mb-2">{{product.description}}</p>
+                    <span class="text-gray-500 text-sm">Category: {{product.category}}</span><br>
                     <span class="text-primary font-bold">Price: ${{product.price}}</span>
                 </div>
+                <!-- Show "Delete" button only for Admin -->
                 <button 
+                    *ngIf="getRole() === 'Admin'"
                     class="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                     (click)="deleteProduct(product)">
                     Delete
+                </button>
+                <!-- Show "Add to Cart" button only for customer -->
+                <button 
+                    *ngIf="getRole() === 'Customer'"
+                    class="ml-4 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
+                    (click)="addToCart(product)">
+                    Add to Cart
                 </button>
             </div>
         </li>
     </ul>
 
-    <!-- Modal for creating new product -->
-    <div *ngIf="showCreateModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50" (click)="showCreateModal = false">
-        <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative">
+    <!-- Modal for creating new product (Admin only) -->
+    <div *ngIf="showCreateModal && getRole() === 'Admin'" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50" (click)="showCreateModal = false">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative" (click)="$event.stopPropagation()">
             <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" (click)="showCreateModal = false">&times;</button>
             <h3 class="text-xl font-bold mb-4">Add New Product</h3>
             <form (ngSubmit)="addProduct()" #productForm="ngForm">
                 <div class="mb-3">
                     <label class="block text-gray-700 mb-1">Name</label>
                     <input type="text" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-gray-700 mb-1">Category</label>
+                    <input type="text" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.category" name="category" required>
                 </div>
                 <div class="mb-3">
                     <label class="block text-gray-700 mb-1">Description</label>
@@ -43,10 +59,29 @@
                 </div>
                 <div class="mb-3">
                     <label class="block text-gray-700 mb-1">Image URL</label>
-                    <input type="text" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.image" name="image" required>
+                    <input type="text" class="w-full border rounded px-3 py-2" [(ngModel)]="newProduct.imageUrl" name="image" required>
                 </div>
                 <button type="submit" class="bg-primary text-white bg-green-600 px-4 py-2 rounded hover:bg-primary-dark transition w-full">Add Product</button>
             </form>
         </div>
+    </div>
+    <div
+    *ngIf="showCartPopup && cartPopupProduct"
+    class="fixed bottom-8 right-8 bg-white text-gray-800 p-6 rounded-xl shadow-lg z-50"
+    style="min-width: 280px;"
+    >
+        <strong>{{cartPopupProduct.name}}</strong> added to cart.<br>
+        <button
+            (click)="viewCart()"
+            class="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+            View Cart
+        </button>
+        <button
+            (click)="closeCartPopup()"
+            class="ml-2 mt-3 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+        >
+            Close
+        </button>
     </div>
 </div>
