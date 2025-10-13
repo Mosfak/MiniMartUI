@@ -15,6 +15,24 @@ export const routes: Routes = [
     loadComponent: () => import('./components/products/products').then(m => m.Products),
     canActivate: [RoleGuard],
     data: { roles: ['Admin', 'Customer'] } // both admin and customer can access
+},
+{
+    path: 'dashboard',
+    loadComponent: () => import('./components/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard),
+    canActivate: [RoleGuard],
+    data: { roles: ['Admin'] } // only admin can access
+},
+{
+    path: 'cart',
+    loadComponent: () => import('./components/cart/cart').then(m => m.Cart),
+    canActivate: [RoleGuard],
+    data: { roles: ['Admin', 'Customer'] } // both admin and customer can access
+},
+{
+    path: 'purchase-history',
+    loadComponent: () => import('./components/purchase-history/purchase-history').then(m => m.PurchaseHistory),
+    canActivate: [RoleGuard],
+    data: { roles: ['Admin', 'Customer'] } // both admin and customer can access
 }
 
 ];
