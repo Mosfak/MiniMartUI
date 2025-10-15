@@ -21,7 +21,7 @@
         <div class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-10" *ngIf="showAccountMenu" (mouseleave)="showAccountMenu = false">
             <a *ngIf="getRole() === 'Admin'" routerLink="/dashboard" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
             <a *ngIf="getRole() === 'Customer'" routerLink="/cart" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cart</a>
-            <a routerLink="/purchase-history" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Purchase History</a>
+            <a *ngIf="getRole() === 'Customer'" routerLink="/purchase-history" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Purchase History</a>
             <button (click)="logout()" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
         </div>
     </div>

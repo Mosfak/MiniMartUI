@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/CartService/cart-service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +14,7 @@ export class Cart implements OnInit {
   cartItems: any[] = [];
   total = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit() {
     this.cartService.cartItems$.subscribe(items => {
@@ -40,9 +40,7 @@ export class Cart implements OnInit {
   }
 
   checkout() {
-    console.log('Checking out');
-    // TODO: Call backend API to create an order
     this.cartService.checkout();
-    // this.cartService.clearCart();
+    this.router.navigate(['/purchase-history']);
   }
 }
