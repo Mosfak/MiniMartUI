@@ -64,7 +64,7 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
   getUser(): { username: string; role: string } | null {
-    return this.user();
+    return this.user(); 
   }
 
   logout(redirect = true) {

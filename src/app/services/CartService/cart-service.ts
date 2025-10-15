@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-
+import { OrderService } from '../OrderService/order-service';
+import { UserService } from '../UserService/user-service';
 export interface CartItem {
   productId: number;
   name: string;
@@ -17,7 +19,8 @@ export class CartService {
   private cartItems = new BehaviorSubject<CartItem[]>([]);
   cartItems$ = this.cartItems.asObservable();
 
-  constructor() {
+  constructor(private orderService: OrderService, private userService: UserService) {
+
     const saved = localStorage.getItem('cart');
     if (saved) {
       this.cartItems.next(JSON.parse(saved));
@@ -51,10 +54,29 @@ export class CartService {
   }
 
   checkout() {
-    // Placeholder for checkout logic
-    console.log('Checkout called');
-  }
-  
+  const items = this.getItems();
+  const totalAmount = this.getTotal();
+
+  this.userService.getUserId().pipe(
+    switchMap((userId) => {
+      console.log("Retrieved userId:", userId);
+      if (!userId) {
+        console.error('User ID not found, cannot place order');
+        throw new Error('Missing user ID');
+      }
+      return this.orderService.placeOrder(items, userId, totalAmount);
+    })
+  ).subscribe({
+    next: (response) => {
+      console.log('Order placed successfully:', response);
+      this.clearCart();
+    },
+    error: (err) => {
+      console.error('Checkout failed:', err);
+    }
+  });
+}
+
   removeItem(productId: number) {
     const items = this.getItems().filter(i => i.productId !== productId);
     this.updateStorage(items);
